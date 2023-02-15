@@ -1,3 +1,5 @@
+// TODO: Move the ItemsList and SeasonsFilter to separate components
+
 import { useEffect, useState } from 'react'
 import './DecorationStation.css'
 
