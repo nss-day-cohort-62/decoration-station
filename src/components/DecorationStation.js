@@ -1,7 +1,7 @@
-// TODO: Move the ItemsList and SeasonsFilter to separate components
-
 import { useEffect, useState } from 'react'
 import './DecorationStation.css'
+import { SeasonFilter } from './SeasonFilter'
+import { ItemsList } from './ItemsList'
 
 export const DecorationStation = () => {
   const [items, setItems] = useState([])
@@ -35,40 +35,15 @@ export const DecorationStation = () => {
   return (
     <>
       <div id="filter-bar">
-        <select
-          className="filter-box"
-          id="season-select"
-          value={seasonChoice}
-          onChange={(event) => {
-            setSeasonChoice(parseInt(event.target.value))
-          }}
-        >
-          <option key="0" value="0">
-            All Seasons
-          </option>
-          {seasons.map((season) => {
-            return (
-              <option key={season.id} value={season.id}>
-                {season.name}
-              </option>
-            )
-          })}
-        </select>
+        <SeasonFilter
+          seasonChoice={seasonChoice}
+          setSeasonChoice={setSeasonChoice}
+          seasons={seasons}
+        />
       </div>
-      <div className="item-container">
-        {filteredItems.map((item) => {
-          return (
-            <div key={item.id} className="item-card">
-              <img
-                src={item.imageUrl}
-                alt={item.name}
-                className="item-img"
-              ></img>
-              <div className="item-name">{item.name}</div>
-            </div>
-          )
-        })}
-      </div>
+      {/* TODO: Add the DecorationForm to the page */}
+      
+      <ItemsList filteredItems={filteredItems} />
     </>
   )
 }
