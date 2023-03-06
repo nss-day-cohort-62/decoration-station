@@ -1,23 +1,65 @@
 import './DecorationStation.css'
+import { SeasonFilter } from './SeasonFilter'
+import { ItemsList } from './ItemsList'
+import { NewDecorationForm } from './DecorationForm'
+import { useEffect, useState } from 'react'
 
 export const DecorationStation = () => {
-  // TODO: Create State for items, seasons, filteredItems, seasonChoice
+  const [itemsData, setItems] = useState([])
+  const [seasonsData, setSeasons] = useState([])
+  const [categoriesData, setCategories] = useState([])
+  const [filteredItems, setFilteredItems] = useState([])
+  const [seasonChoice, setSeasonChoice] = useState(0)
+  const getItems = () => {
+    fetch('http://localhost:8088/items')
+      .then((res) => res.json())
+      .then((itemsData) => {
+        setItems(itemsData)
+      })
+  }
+  useEffect(() => {
+    getItems()
 
-  // TODO: Create a useEffect that fetches items and seasons
+    fetch('http://localhost:8088/seasons')
+      .then((res) => res.json())
+      .then((seasonsData) => {
+        setSeasons(seasonsData)
+      })
 
-  // TODO: Create a useEffect that updates the filteredItems state if seasonChoice changes
+    fetch('http://localhost:8088/categories')
+      .then((res) => res.json())
+      .then((categoriesData) => {
+        setCategories(categoriesData)
+      })
+  }, [])
 
+  useEffect(() => {
+    if (seasonChoice === 0) {
+      setFilteredItems(itemsData)
+    } else {
+      const seasonItems = itemsData.filter((item) => item.seasonId === seasonChoice)
+      setFilteredItems((prevState) => {
+        if (prevState !== seasonItems) {
+          return seasonItems
+        }
+      })
+    }
+  }, [seasonChoice, itemsData])
 
   return (
     <>
       <h1>Decoration Station</h1>
       <div id="filter-bar">
-        {/* TODO: Create a select element that shows the seasons as options. Select should have an onChange function that sets the seasonChoice */}
-      </div>
+        <SeasonFilter
+          seasonChoice={seasonChoice}
+          setSeasonChoice={setSeasonChoice}
+          seasons={seasonsData}
 
-      <div className="item-container">
-        {/* TODO: Display the filteredItems */}
+        />
       </div>
+      {/* TODO: Add the DecorationForm to the page */}
+      <NewDecorationForm seasons={seasonsData} categories={categoriesData} getItems={getItems} />
+      <ItemsList filteredItems={filteredItems} />
     </>
   )
 }
