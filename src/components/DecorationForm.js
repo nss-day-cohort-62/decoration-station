@@ -1,9 +1,27 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 // TODO: Add the categories, seasons as props
-export const NewDecorationForm = ({ seasons, categories, getItems }) => {
+export const NewDecorationForm = () => {
   // TODO: Create newDecoration useState
   const [newDecoration, setNewDecoration] = useState({})
+  const [seasons, setSeasons] = useState([])
+  const [categories, setCategories] = useState([])
+  const navigate = useNavigate()
+  useEffect(() => {
+
+    fetch('http://localhost:8088/seasons')
+      .then((res) => res.json())
+      .then((seasonsData) => {
+        setSeasons(seasonsData)
+      })
+
+    fetch('http://localhost:8088/categories')
+      .then((res) => res.json())
+      .then((categoriesData) => {
+        setCategories(categoriesData)
+      })
+  }, [])
 
   // TODO: Create a function that handles submitting the form. 
   // 1. Should check that the form has been filled out
@@ -19,7 +37,7 @@ export const NewDecorationForm = ({ seasons, categories, getItems }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(newDecoration)
-      }).then(() => getItems())
+      }).then(() => navigate('/'))
     } else {
       window.alert("Please fill out the form")
     }

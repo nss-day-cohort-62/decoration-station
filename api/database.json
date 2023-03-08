@@ -132,13 +132,6 @@
       "imageUrl": "https://images.kirklands.com/is/image/Kirklands/277008?hei=300&qlt=85,1&wid=300&fmt=jpeg&resMode=bicub&op_sharpen=1",
       "seasonId": 2,
       "categoryId": 1
-    },
-    {
-      "name": "Garland",
-      "image": "google.com",
-      "seasonId": "2",
-      "categoryId": "1",
-      "id": 20
     }
   ],
   "seasons": [
